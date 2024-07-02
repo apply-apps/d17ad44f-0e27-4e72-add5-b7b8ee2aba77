@@ -1,27 +1,38 @@
 // Filename: index.js
 // Combined code from all files
 
-import React from 'react';
-import { SafeAreaView, StyleSheet, Text, View, FlatList } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, StyleSheet, Text, View, Button } from 'react-native';
 
 const alphabet = [...Array(26)].map((_, i) => String.fromCharCode(65 + i));
 
 const AlphabetDisplay = () => {
-    const renderItem = ({ item }) => (
-        <View style={styles.item}>
-            <Text style={styles.itemText}>{item}</Text>
-        </View>
-    );
+    const [index, setIndex] = useState(0);
+
+    const showNextLetter = () => {
+        if (index < alphabet.length - 1) {
+            setIndex(index + 1);
+        }
+    };
 
     return (
-        <FlatList
-            data={alphabet}
-            renderItem={renderItem}
-            keyExtractor={(item) => item}
-            contentContainerStyle={styles.list}
-        />
+        <View style={styles.alphabetContainer}>
+            <View style={styles.item}>
+                <Text style={styles.itemText}>{alphabet[index]}</Text>
+            </View>
+            <Button title="Next" onPress={showNextLetter} />
+        </View>
     );
 };
+
+export default function App() {
+    return (
+        <SafeAreaView style={styles.container}>
+            <Text style={styles.title}>Alphabet Display</Text>
+            <AlphabetDisplay />
+        </SafeAreaView>
+    );
+}
 
 const styles = StyleSheet.create({
     container: {
@@ -35,7 +46,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginVertical: 20,
     },
-    list: {
+    alphabetContainer: {
         alignItems: 'center',
     },
     item: {
@@ -52,12 +63,3 @@ const styles = StyleSheet.create({
         color: '#333',
     },
 });
-
-export default function App() {
-    return (
-        <SafeAreaView style={styles.container}>
-            <Text style={styles.title}>Alphabet Display</Text>
-            <AlphabetDisplay />
-        </SafeAreaView>
-    );
-}
